@@ -95,9 +95,24 @@
 
 </ul>
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">abc</div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">xyz</div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">kth</div>
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+   <div class="row">
+     <div v-for="product in products" :key="product.id" class="col-md-4 p-3">
+      <div class="card" style="width: 7rem;">
+  <img class="card-img-top" :src="product.image" alt="Card image cap">
+  <div class="card-body">
+   <button type="button" class="btn btn-xs btn-primary">
+  Avilable <span class="badge badge-light">{{ product.qty }}</span>
+  
+</button>
+    
+  </div>
+</div>
+
+     </div>
+   </div>
+
+  </div>
 </div>
                  
                  
