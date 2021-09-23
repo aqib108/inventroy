@@ -84,7 +84,21 @@
                   
                 </div>
                 <div class="card-body">
-                  
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" @click="getproducts(0)" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All Products</a>
+  </li>
+  <li v-for="category in categories" :key="category.id" class="nav-item">
+    <a class="nav-link" id="profile-tab" @click="getproducts(category.id)" data-toggle="tab" href="#home" role="tab" aria-controls="profile" aria-selected="false">{{ category.category_name }}</a>
+  </li>
+  
+
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">abc</div>
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">xyz</div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">kth</div>
+</div>
                  
                  
                  
@@ -143,8 +157,38 @@
       {
         this.$router.push({name: '/'}) 
       }
+    this.getcategories();
+    this.getproducts(0);
+    },
+    data(){
+    return {
+       products:[],
+       categories:[]
+    }
+  },
+  methods:{
+      getcategories()
+      {
+        axios.get("/api/category").then(response=>
+     {
+        this.categories = response.data;
+     }).
+     catch(error=>{
+        console.log(error);
+     });
+    },
+    getproducts(id)
+    {
+         axios.get("/api/getproduct/"+id).then(response=>
+     {
+        this.products = response.data;
+     }).
+     catch(error=>{
+        console.log(error);
+     });
 
     }
+  }
 
 }
 </script>

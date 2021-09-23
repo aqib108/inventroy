@@ -10,7 +10,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\SalaryController;
-
+use App\Http\Controllers\PosController;
 
 
 
@@ -55,4 +55,5 @@ Route::resource('expense', ExpenseController::class);
 Route::resource('salary', SalaryController::class);
 
 Route::post('stockupdate/{id}',[ProductController::class, 'stockupdate'])->name('stockupdate');
+Route::get('getproduct/{id}',[PosController::class, 'index'])->name('getproduct');
 //end
