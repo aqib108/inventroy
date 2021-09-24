@@ -8,6 +8,24 @@ class Notification {
 
         }).show();
     }
+    informer(message) {
+        new Noty({
+            type: "success",
+            layout: "topRight",
+            timeout: 3000,
+            text: message,
+
+        }).show();
+    }
+    errorinformer(message) {
+        new Noty({
+            type: "danger",
+            layout: "topRight",
+            timeout: 3000,
+            text: message,
+
+        }).show();
+    }
     Alert() {
         new Noty({
             type: "alert",

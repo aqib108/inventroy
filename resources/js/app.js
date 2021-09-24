@@ -41,7 +41,7 @@ window.swalWithBootstrapButtons = swalWithBootstrapButtons;
 
 
 //end of sweet alert 2
-
+window.Reload = new Vue();
 Vue.use(VueRouter)
 const router = new VueRouter({
         routes,

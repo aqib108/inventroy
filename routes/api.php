@@ -56,4 +56,7 @@ Route::resource('salary', SalaryController::class);
 
 Route::post('stockupdate/{id}',[ProductController::class, 'stockupdate'])->name('stockupdate');
 Route::get('getproduct/{id}',[PosController::class, 'index'])->name('getproduct');
+Route::get('Addtocart/{id}',[PosController::class, 'Addtocart'])->name('Addcart');
+Route::get('cartproducts',[PosController::class, 'getcart'])->name('cartproducts');
+
 //end

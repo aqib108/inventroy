@@ -19,61 +19,71 @@
             <div class="col-xl-6 col-lg-6 mb-4">
               <div class="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Invoice</h6>
-                  <a class="m-0 float-right btn btn-danger btn-sm" href="#">View More <i
-                      class="fas fa-chevron-right"></i></a>
+                  <h6 class="m-0 font-weight-bold text-primary">Cart</h6>
+                  <a class="m-0 float-right btn btn-primary btn-sm" href="#"><i
+                      class="fas fa-user"></i>Add Customer</a>
                 </div>
                 <div class="table-responsive">
                   <table class="table align-items-center table-flush">
                     <thead class="thead-light">
                       <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Item</th>
-                        <th>Status</th>
+                        <th>Name</th>
+                        <th>Qty</th>
+                        <th>Unit</th>
+                        <th>Total</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td><a href="#">RA0449</a></td>
-                        <td>Udin Wayang</td>
-                        <td>Nasi Padang</td>
-                        <td><span class="badge badge-success">Delivered</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA5324</a></td>
-                        <td>Jaenab Bajigur</td>
-                        <td>Gundam 90' Edition</td>
-                        <td><span class="badge badge-warning">Shipping</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA8568</a></td>
-                        <td>Rivat Mahesa</td>
-                        <td>Oblong T-Shirt</td>
-                        <td><span class="badge badge-danger">Pending</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA1453</a></td>
-                        <td>Indri Junanda</td>
-                        <td>Hat Rounded</td>
-                        <td><span class="badge badge-info">Processing</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA1998</a></td>
-                        <td>Udin Cilok</td>
-                        <td>Baby Powder</td>
-                        <td><span class="badge badge-success">Delivered</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
+                      
+                   
+                     
+                      
+                      <tr v-for="cartproduct in cartproducts" :key="cartproduct.id">
+                        <td><a href="#">{{cartproduct.product_name}}</a></td>
+                        <td>{{cartproduct.product_qty}}</td>
+                        <td>{{cartproduct.product_price}}</td>
+                        <td>{{cartproduct.subtotal}}</td>
+                        <td><a href="#" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></a></td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="card-footer"></div>
+                <div class="card-footer">
+                <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-item-center">
+                Qty : <strong>45s</strong>
+                </li>
+                 <li class="list-group-item d-flex justify-content-between align-item-center">
+                Sub Total : <strong>450$</strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-item-center">
+                weight : <strong>50kg</strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-item-center">
+                Total : <strong>550$</strong>
+                </li>
+                </ul>
+                <hr>
+                <form>
+                <label>Customer Name</label>
+                <select class="form-control" id="product_supplier" v-model="form.customer_id">
+                <option v-for="customer in customers" :value="customer.id" :key="customer.id">{{customer.name}}</option>
+                </select>
+                <label>Pay</label>
+                <input type="text" class="form-control" v-model="form.pay" />
+                <label>Due</label>
+                <input type="text" class="form-control" v-model="form.due" />
+                <label>Pay Method</label>
+                <select class="form-control"  v-model="form.pay_method">
+                <option value="cash">Cash</option>
+                <option value="bank">Bank</option>
+                <option value="cheaque">Cheaque</option>
+                </select>
+                <br>
+                <button type="submit" class="btn btn-primary mr-auto">Checkout</button>
+                </form>
+                </div>
               </div>
             </div>
             <div class="col-xl-6 col-lg-6">
@@ -81,7 +91,9 @@
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Products Sold</h6>
-                  
+             
+   <input type="text" v-model="searchTerm" placeholder="Search by Name" class="form-control" />
+
                 </div>
                 <div class="card-body">
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -96,13 +108,16 @@
 </ul>
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+   
    <div class="row">
-     <div v-for="product in products" :key="product.id" class="col-md-4 p-3">
+     <div v-for="product in filtersearch" :key="product.id" class="col-md-4 p-3">
       <div class="card" style="width: 7rem;">
   <img class="card-img-top" :src="product.image" alt="Card image cap">
   <div class="card-body">
-   <button type="button" class="btn btn-xs btn-primary">
-  Avilable <span class="badge badge-light">{{ product.qty }}</span>
+  <p>{{product.product_name}}</p>
+  <p>{{product.selling_price}}</p>
+   <button @click="Addtocart(product.id)" type="button" class="btn btn-xs btn-primary">
+  <i class="fas fa-cart-plus"></i>
   
 </button>
     
@@ -174,11 +189,35 @@
       }
     this.getcategories();
     this.getproducts(0);
+    this.getcustomers();
+     this.cartproduct();
+    Reload.$on('AfterAddtoCart',()=>{
+      this.cartproduct();
+    });
     },
+    computed:{
+    filtersearch()
+     {
+   
+return this.products.filter(product =>{
+  return product.product_name.match(this.searchTerm)
+})
+     } 
+  },
     data(){
     return {
+      form:{
+        customer_id:null,
+        pay_method:null,
+        pay:null,
+        due:null
+      },
        products:[],
-       categories:[]
+       categories:[],
+       customers:[],
+       cartproducts:[],
+       searchTerm:'',
+       carts:[]
     }
   },
   methods:{
@@ -201,6 +240,44 @@
      catch(error=>{
         console.log(error);
      });
+
+    },
+    getcustomers()
+    {
+      axios.get("/api/customer").then(response=>
+    {
+      this.customers = response.data;
+    
+      // $('#datatable').DataTable();
+    }).
+    catch(error=>{
+        console.log(error);
+    });
+    },
+    Addtocart(id)
+    {
+      axios.get("/api/Addtocart/"+id).then(response=>
+     {
+       Reload.$emit('AfterAddtoCart');
+       Notification.informer(response.data.message);
+        //this.carts = response.data;
+     }).
+     catch(error=>{
+        Notification.errorinformer(error);
+     });
+     
+    },
+    cartproduct()
+    {
+      axios.get("/api/cartproducts").then(response=>
+    {
+      this.cartproducts = response.data;
+    
+      // $('#datatable').DataTable();
+    }).
+    catch(error=>{
+        console.log(error);
+    });
 
     }
   }
