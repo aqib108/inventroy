@@ -19,7 +19,7 @@ class Notification {
     }
     errorinformer(message) {
         new Noty({
-            type: "danger",
+            type: "warning",
             layout: "topRight",
             timeout: 3000,
             text: message,

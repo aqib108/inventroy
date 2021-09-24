@@ -58,5 +58,7 @@ Route::post('stockupdate/{id}',[ProductController::class, 'stockupdate'])->name(
 Route::get('getproduct/{id}',[PosController::class, 'index'])->name('getproduct');
 Route::get('Addtocart/{id}',[PosController::class, 'Addtocart'])->name('Addcart');
 Route::get('cartproducts',[PosController::class, 'getcart'])->name('cartproducts');
-
+Route::get('removetocart/{id}',[PosController::class, 'removetocart'])->name('removetocart');
+Route::get('incrementcart/{id}',[PosController::class, 'incrementcart'])->name('incrementcart');
+Route::get('decrementcart/{id}',[PosController::class, 'decrementcart'])->name('decrementcart');
 //end

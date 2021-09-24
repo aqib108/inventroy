@@ -40,11 +40,11 @@
                      
                       
                       <tr v-for="cartproduct in cartproducts" :key="cartproduct.id">
-                        <td><a href="#">{{cartproduct.product_name}}</a></td>
-                        <td>{{cartproduct.product_qty}}</td>
+                        <td><router-link :to="{ name:'Edit-Product', params:{product_id:cartproduct.product_id } }">{{cartproduct.product_name}}</router-link></td>
+                        <td><span @click="increment(cartproduct.id)" class="btn btn-sm btn-outline-success mb-1"><i class="fa fa-plus"></i></span><input class="qtytext" type="number" :value="cartproduct.product_qty" ><span v-if="cartproduct.product_qty>=2" @click="decrement(cartproduct.id)" class="btn btn-sm btn-outline-danger mb-1"><i class="fa fa-minus"></i></span><span v-else @click="decrement(0)" class="btn btn-sm btn-outline-danger mb-1"><i class="fa fa-minus"></i></span></td>
                         <td>{{cartproduct.product_price}}</td>
                         <td>{{cartproduct.subtotal}}</td>
-                        <td><a href="#" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></a></td>
+                        <td><a  @click="removetocart(cartproduct.id)" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></a></td>
                       </tr>
                     </tbody>
                   </table>
@@ -52,16 +52,16 @@
                 <div class="card-footer">
                 <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-item-center">
-                Qty : <strong>45s</strong>
+                Qty : <strong>{{ Qty }}</strong>
                 </li>
                  <li class="list-group-item d-flex justify-content-between align-item-center">
-                Sub Total : <strong>450$</strong>
+                Sub Total : <strong>{{ Total }} RS</strong>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-item-center">
-                weight : <strong>50kg</strong>
+                Tex : <strong>5%</strong>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-item-center">
-                Total : <strong>550$</strong>
+                Total : <strong>{{ Total*(1+5/100) }} RS</strong>
                 </li>
                 </ul>
                 <hr>
@@ -202,7 +202,25 @@
 return this.products.filter(product =>{
   return product.product_name.match(this.searchTerm)
 })
-     } 
+     },
+     Qty()
+     {
+       let sum=0;
+       for(let i=0; i<this.cartproducts.length; i++)
+       {
+         sum = sum + (parseFloat(this.cartproducts[i].product_qty));
+       }
+       return sum;
+     }, 
+     Total()
+     {
+       let sum=0;
+       for(let i=0; i<this.cartproducts.length; i++)
+       {
+         sum = sum + (parseFloat(this.cartproducts[i].subtotal));
+       }
+       return sum;
+     }
   },
     data(){
     return {
@@ -279,11 +297,57 @@ return this.products.filter(product =>{
         console.log(error);
     });
 
+    },
+    removetocart(id)
+    {
+      axios.get("/api/removetocart/"+id).then(response=>
+     {
+       Reload.$emit('AfterAddtoCart');
+       Notification.informer(response.data.message);
+        //this.carts = response.data;
+     }).
+     catch(error=>{
+        Notification.errorinformer(error);
+     });
+    },
+    increment(id)
+    {
+      axios.get("/api/incrementcart/"+id).then(response=>
+     {
+       Reload.$emit('AfterAddtoCart');
+       Notification.informer(response.data.message);
+        //this.carts = response.data;
+     }).
+     catch(error=>{
+        Notification.errorinformer(error);
+     });
+    },
+    decrement(id)
+    {
+      if(id==0)
+      {
+        Notification.errorinformer('The Quantity Not Less Then 1');
+        return false;
+      }
+      axios.get("/api/decrementcart/"+id).then(response=>
+     {
+       Reload.$emit('AfterAddtoCart');
+       Notification.informer(response.data.message);
+        //this.carts = response.data;
+     }).
+     catch(error=>{
+        Notification.errorinformer(error);
+     });
     }
   }
 
 }
 </script>
 <style scoped>
+.qtytext{
+    text-align-last: revert;
+    text-align: center;
+    width: 34px;
+}
 
 </style>
