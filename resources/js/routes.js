@@ -37,6 +37,8 @@ let AddCustomer = require('./components/customer/create.vue').default
 let EditCustomer = require('./components/customer/edit.vue').default
     //POS
 let POS = require('./components/pos/pos.vue').default
+    //orders
+let Orders = require('./components/order/orders.vue').default
 
 export const routes = [
     { path: '/', name: '/', component: login },
@@ -78,5 +80,8 @@ export const routes = [
     { path: '/Edit-Customer/:customer_id', name: 'Edit-Customer', component: EditCustomer },
     //POS
     { path: '/Point-of-Sale', name: 'Point-of-Sale', component: POS },
+    //orders
+    { path: '/Orders', name: 'Orders', component: Orders },
+
 
 ]

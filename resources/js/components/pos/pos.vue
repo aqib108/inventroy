@@ -20,7 +20,7 @@
               <div class="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Cart</h6>
-                  <a class="m-0 float-right btn btn-primary btn-sm" href="#"><i
+                  <a class="m-0 float-right btn btn-primary btn-sm"   data-toggle="modal" data-target="#exampleModalLong"><i
                       class="fas fa-user"></i>Add Customer</a>
                 </div>
                 <div class="table-responsive">
@@ -65,7 +65,7 @@
                 </li>
                 </ul>
                 <hr>
-                <form>
+                <form @submit.prevent="placeorder">
                 <label>Customer Name</label>
                 <select class="form-control" id="product_supplier" v-model="form.customer_id">
                 <option v-for="customer in customers" :value="customer.id" :key="customer.id">{{customer.name}}</option>
@@ -173,8 +173,94 @@
                 </div>
               </div>
             </div>
-          </div>
-
+          </div> 
+          <!--add user modal -->
+          <!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Customer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="row">
+              <div class="col-lg-12">
+                <div class="login-form">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">Add Customer</h1>
+                  </div>
+                  <form @submit.prevent="create" enctype="multipart/form-data">
+                    <div class="form-group">
+                    <div class="form-row">
+                    <div class="col-md-6">
+                     <label> Name</label>
+                      <input type="text" class="form-control" id="name" placeholder="Enter Your Name" v-model="form1.name">
+                       <small class="text-danger" v-if="errors.name" >{{ errors.name[0] }}</small>
+                    </div>
+                    <div class="col-md-6">
+                     <label> Email</label>
+                      <input type="text" class="form-control" id="email" placeholder="Enter Your Email" v-model="form1.email">
+                       <small class="text-danger" v-if="errors.email" >{{ errors.email[0] }}</small>
+                    </div>
+                    </div>
+                      
+                    </div>
+     <div class="form-group">
+                    <div class="form-row">
+                    
+                    <div class="col-md-6">
+                     <label> Phone</label>
+                      <input type="number" class="form-control" id="phone" placeholder="Enter Your Phone No" v-model="form1.phone">
+                       <small class="text-danger" v-if="errors.phone" >{{ errors.phone[0] }}</small>
+                    </div>
+                    <div class="col-md-6">
+                     <label> Address</label>
+                      <input type="text" class="form-control" id="address" placeholder="Enter Your Address" v-model="form1.address">
+                       <small class="text-danger" v-if="errors.address" >{{ errors.address[0] }}</small>
+                    </div>
+                    </div>
+                      
+                    </div>
+                
+                  
+                                   <div class="form-group">
+                    <div class="form-row">
+                    <div class="col-md-6">
+                   
+                      <input type="file" class="custom-file-input" @change="onChange" accept="image/*">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                       <small class="text-danger" v-if="errors.photo" >{{ errors.photo[0] }}</small>
+                    </div>
+                    <div class="col-md-6">
+                    <img :src="form1.photo" style="height: 50px; width: 50px" />
+                    </div>
+                    </div>
+                      
+                    </div>
+                   
+                    
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    </div>
+                   
+                  </form>
+                 
+                  <div class="text-center">
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
         </div>
     </div>
 </template>
@@ -193,6 +279,7 @@
      this.cartproduct();
     Reload.$on('AfterAddtoCart',()=>{
       this.cartproduct();
+        this.getcustomers();
     });
     },
     computed:{
@@ -230,6 +317,16 @@ return this.products.filter(product =>{
         pay:null,
         due:null
       },
+       form1:{
+            email:null,
+            name:null,
+            photo:'https://image.shutterstock.com/image-vector/default-avatar-profile-icon-grey-600w-518740741.jpg',
+            phone:null,
+            address:null,
+
+            
+        },
+       errors:[],
        products:[],
        categories:[],
        customers:[],
@@ -239,6 +336,48 @@ return this.products.filter(product =>{
     }
   },
   methods:{
+    onChange(e) {
+      const image = e.target.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(image);
+                reader.onload = e =>{
+                    this.form1.photo = e.target.result;
+                    
+                };
+    },
+      create()
+      {
+       
+        axios.post('/api/customer',this.form1)
+        .then(resp=>{
+        
+        Notification.success();
+           Reload.$emit('AfterAddtoCart');
+           
+         //this.$router.push({name: 'All-Customer'})
+         
+        })
+        .catch(error=>{
+          this.errors = error.response.data.errors;
+         Notification.warning();
+        })
+      },
+        placeorder()
+      {
+        axios.post('/api/placeorder',this.form)
+        .then(resp=>{
+        
+        Notification.informer(resp.data.message);
+       Reload.$emit('AfterAddtoCart');
+       //  this.$router.push({name: 'All-Expense'})
+         
+        })
+        .catch(error=>{
+          this.errors = error.response.data.errors;
+         Notification.warning();
+        })
+      },
+
       getcategories()
       {
         axios.get("/api/category").then(response=>

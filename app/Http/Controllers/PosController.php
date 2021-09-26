@@ -9,6 +9,14 @@ use App\Models\Product;
 class PosController extends Controller
 {
     //
+    public function dashboard()
+    {
+       $data['today_orders'] = DB::table('orders')->where('order_date',date('y-m-d'))->get()->count(); 
+       $data['today_sales'] = DB::table('orders')->where('order_date',date('y-m-d'))->sum('pay'); 
+       $data['today_dues'] = DB::table('orders')->where('order_date',date('y-m-d'))->sum('due'); 
+       $data['today_products'] = DB::table('products')->get()->count(); 
+       return response()->json($data);        
+    }
     function index($id)
     {
         if($id==0)
@@ -175,4 +183,76 @@ return response()->json($products);
         }
         return response()->json($arr);
     }
+    //placeorder
+    function placeorder(Request $request)
+    {
+        extract($request->all());
+      
+        $qty = Cart::get()->sum('product_qty');
+        $subtotal = Cart::get()->sum('subtotal');
+        $order = array(
+     'customer_id'=>$customer_id,
+     'qty'=>$qty,
+     'subtotal'=>$subtotal,
+     'tex'=>5,
+     'total'=>$subtotal*(1+5/100),
+     'pay'=>$pay,
+     'due'=>$due,
+     'pay_method'=>$pay_method,
+     'order_id'=>uniqid(),
+     'order_date'=>date('y-m-d'),
+     'month'=>date('m'),
+     'year'=>date('y')
+        );
+        $result=0;
+        $result = DB::table('orders')->insertGetId($order);
+        if($result!=0)
+        {
+            $cart = Cart::get();
+            foreach($cart as $ct)
+            {
+               $order_details= array(
+                   'order_id'=>$result,
+                    'product_id'=>$ct->product_id,
+                    'product_qty'=>$ct->product_qty,
+                    'product_price'=>$ct->product_price,
+                    'subtotal'=>$ct->subtotal
+               );
+               $ch=DB::table('orders_details')->insert($order_details);
+               if($ch)
+               {
+                   DB::table('products')->where('id',$ct->product_id)->update(['qty'=>DB::raw('qty -'.$ct->product_qty)]);
+                   
+               }
+              
+            }
+            if(Cart::truncate())
+            {
+                 $arr['message'] = 'Successfully Place Order';
+            }
+            else
+            {
+             $arr['message'] = 'Issue in truncart Cart Table';
+            }
+
+        }
+        else
+        {
+            $arr['message'] = 'issue in create order';
+        }
+        return response()->json($arr);
+
+    }
+  function orders()
+  {
+     //
+     $order = DB::table('orders as or')
+     ->join('customers as cust','cust.id','or.customer_id')
+     ->select('or.*','cust.name as customer_name')
+     ->orderBy('id','DESC')
+     ->get();
+
+return response()->json($order);   
+  }
+
 }

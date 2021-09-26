@@ -14,6 +14,7 @@ class ProductController extends Controller
     {
       $this->model = $model;
     }
+    
     public function index()
     {
         //

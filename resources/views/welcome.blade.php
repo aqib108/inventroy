@@ -158,7 +158,11 @@
         <i class="fas fa-sticky-note"></i>
           <span>Stock</span></router-link>
       </li>
-     
+      <li class="nav-item active">
+        <router-link to="/orders" class="nav-link">
+        <i class="fas fa-sticky-note"></i>
+          <span>Orders</span></router-link>
+      </li>
     
      
      

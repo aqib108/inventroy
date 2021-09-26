@@ -61,4 +61,8 @@ Route::get('cartproducts',[PosController::class, 'getcart'])->name('cartproducts
 Route::get('removetocart/{id}',[PosController::class, 'removetocart'])->name('removetocart');
 Route::get('incrementcart/{id}',[PosController::class, 'incrementcart'])->name('incrementcart');
 Route::get('decrementcart/{id}',[PosController::class, 'decrementcart'])->name('decrementcart');
+Route::post('placeorder',[PosController::class, 'placeorder'])->name('placeorder');
+Route::get('getorders',[PosController::class, 'orders'])->name('getorders');
+Route::get('dashboard',[PosController::class, 'dashboard'])->name('dashboard');
+
 //end
