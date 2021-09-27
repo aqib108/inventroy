@@ -254,5 +254,18 @@ return response()->json($products);
 
 return response()->json($order);   
   }
+ function outofstock()
+ {
+    $products = DB::table('products as pro')
+    ->join('categories as cat','pro.category_id','cat.id')
+    ->join('suppliers as sup','pro.supplier_id','sup.id')
+    ->where('pro.qty','=',0)
+    ->select('pro.*','cat.category_name','sup.name as supplier_name')
+    ->orderBy('id','DESC')
+    ->get();
+    return response()->json($products); 
+
+ }
+
 
 }

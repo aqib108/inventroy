@@ -64,5 +64,6 @@ Route::get('decrementcart/{id}',[PosController::class, 'decrementcart'])->name('
 Route::post('placeorder',[PosController::class, 'placeorder'])->name('placeorder');
 Route::get('getorders',[PosController::class, 'orders'])->name('getorders');
 Route::get('dashboard',[PosController::class, 'dashboard'])->name('dashboard');
+Route::get('outofstock',[PosController::class, 'outofstock'])->name('outofstock');
 
 //end
