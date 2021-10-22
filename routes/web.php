@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/admin', function () {
     return view('welcome');
+});
+Route::get('/', function () {
+  return view('userside');
 });
 Route::get('/{vue_capture?}',function(){
   return view('welcome');

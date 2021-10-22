@@ -4,6 +4,7 @@ require('./bootstrap');
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { routes } from './routes';
+import store from './store/index'
 
 //import a class for globel used
 import User from './Helpers/User';
@@ -51,5 +52,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
+    store,
     router
 });

@@ -11,7 +11,7 @@ export default{
                  icon: 'success',
                  title: 'Logout Successfully'
                    });
-        this.$router.push({name: '/'}) 
+        this.$router.push({name: '/login'}) 
       }
 
     }

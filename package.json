@@ -28,6 +28,7 @@
         "datatables.net-dt": "^1.11.2",
         "noty": "^3.2.0-beta-deprecated",
         "sweetalert2": "^11.1.5",
-        "vue-router": "^3.5.2"
+        "vue-router": "^3.5.2",
+        "vuex": "^3.6.2"
     }
 }

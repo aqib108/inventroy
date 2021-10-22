@@ -32,7 +32,7 @@
     
   <div id="wrapper">
     <!-- Sidebar -->
-    <nav id="sidebar" v-show=" $route.path === '/' || $route.path === '/register' || $route.path === '/forgot'?false:true " style="display: none !important;">
+    <nav id="sidebar" v-show=" $route.path === '/login' || $route.path === '/register' || $route.path === '/forgot'?false:true " style="display: none !important;">
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
       <router-link to="/" class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
@@ -173,7 +173,7 @@
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <!-- TopBar -->
-        <nav id="topbar"  class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top"  v-show="$route.path === '/' || $route.path === '/register' || $route.path === '/forgot'?false:true " style="display: none !important;"  >
+        <nav id="topbar"  class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top"  v-show="$route.path === '/login' || $route.path === '/register' || $route.path === '/forgot'?false:true " style="display: none !important;"  >
           <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>

@@ -40,8 +40,13 @@ let POS = require('./components/pos/pos.vue').default
     //orders
 let Orders = require('./components/order/orders.vue').default
 
+///User Side
+let userindex = require('./components/UserSide/index.vue').default
 export const routes = [
-    { path: '/', name: '/', component: login },
+    ///user side routes
+    { path: '/', name: '/', component: userindex },
+    //end of user side routes
+    { path: '/login', name: '/login', component: login },
     { path: '/register', name: 'register', component: register },
     { path: '/forgot', name: 'forgot', component: forgot },
     { path: '/Home', name: 'Home', component: Home },
